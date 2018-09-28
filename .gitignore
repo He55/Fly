@@ -3,7 +3,6 @@ bin/
 obj/
 .vscode/
 .vs/
-layui/
 
 # Ignore files
 .DS_Store
