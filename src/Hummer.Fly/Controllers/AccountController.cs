@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 
 namespace Hummer.Fly.Controllers
 {
@@ -15,6 +16,12 @@ namespace Hummer.Fly.Controllers
         public IActionResult Login()
         {
             return View();
+        }
+
+        public async Task<IActionResult> GoogleLoginAsync()
+        {
+            await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme);
+            return Json("ok");
         }
 
         [HttpPost]
@@ -45,7 +52,8 @@ namespace Hummer.Fly.Controllers
                 new ClaimsPrincipal(claimsIdentity),
                 authenticationProperties);
 
-            if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
+            if (string.IsNullOrEmpty(returnUrl)
+                || !Url.IsLocalUrl(returnUrl))
             {
                 return RedirectToAction("Index", "Home");
             }
