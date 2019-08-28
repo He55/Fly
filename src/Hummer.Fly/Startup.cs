@@ -38,28 +38,30 @@ namespace Hummer.Fly
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddAuthentication(GoogleDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = "/account/login";
-                    options.LogoutPath = "/account/logout";
-                    options.AccessDeniedPath = "";
-                    options.ReturnUrlParameter = "returnUrl";
-                }).AddGoogle(options =>
-                {
-                    IConfigurationSection googleAuthNSection =
-                        Configuration.GetSection("Authentication:Google");
-
-                    options.ClientId = googleAuthNSection["ClientId"];
-                    options.ClientSecret = googleAuthNSection["ClientSecret"];
-                    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.SaveTokens = true;
-                });
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddCookie(options =>
+            {
+                options.LoginPath = "/account/login";
+                options.LogoutPath = "/account/logout";
+                options.ReturnUrlParameter = "returnUrl";
+            }).AddGoogle(options =>
+            {
+                IConfigurationSection googleAuthNSection =
+                    Configuration.GetSection("Authentication:Google");
+                options.ClientId = googleAuthNSection["ClientId"];
+                options.ClientSecret = googleAuthNSection["ClientSecret"];
+            }).AddGitHub(options =>
+            {
+                options.ClientId = "e632ae66720d7ec4dafd";
+                options.ClientSecret = "4ca196ca3286b11ca7ed083adbee47dcf52da80c";
+            });
 
             // URL小写配置
             services.AddRouting(options => options.LowercaseUrls = true);
-            services.AddMvc(options => options.EnableEndpointRouting = false)
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddControllersWithViews();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,17 +80,19 @@ namespace Hummer.Fly
             // app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            app.UseRouting();
             app.UseAuthentication();
+            app.UseAuthorization();
 
             // 重定向错误页面
-            app.UseStatusCodePagesWithRedirects("/home/tips/404");
+            // app.UseStatusCodePagesWithRedirects("/home/tips/404");
 
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }

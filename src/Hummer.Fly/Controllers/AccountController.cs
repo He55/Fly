@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using AspNet.Security.OAuth.GitHub;
 
 namespace Hummer.Fly.Controllers
 {
@@ -18,10 +19,19 @@ namespace Hummer.Fly.Controllers
             return View();
         }
 
-        public async Task<IActionResult> GoogleLoginAsync()
+        public IActionResult CookieLogin()
         {
-            await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme);
-            return Json("ok");
+            return Challenge(new AuthenticationProperties() { RedirectUri = "/" }, CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+
+        public IActionResult GoogleLogin()
+        {
+            return Challenge(new AuthenticationProperties() { RedirectUri = "/" }, GoogleDefaults.AuthenticationScheme);
+        }
+
+        public IActionResult GithubLogin()
+        {
+            return Challenge(new AuthenticationProperties() { RedirectUri = "/" }, GitHubAuthenticationDefaults.AuthenticationScheme);
         }
 
         [HttpPost]
