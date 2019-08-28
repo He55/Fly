@@ -8,6 +8,7 @@ namespace Hummer.Fly.Controllers
     {
         public IActionResult Index()
         {
+            var user = User;
             return View();
         }
 

@@ -56,6 +56,10 @@ namespace Hummer.Fly
             {
                 options.ClientId = "e632ae66720d7ec4dafd";
                 options.ClientSecret = "4ca196ca3286b11ca7ed083adbee47dcf52da80c";
+            }).AddMicrosoftAccount(options =>
+            {
+                options.ClientId = "89b7fa2c-1efb-482d-8026-625b9dfb1b2b";
+                options.ClientSecret = ":IwCPi:T[wHScWpu[8UdaHH5T4lvKEW0";
             });
 
             // URL小写配置

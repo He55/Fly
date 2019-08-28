@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 using AspNet.Security.OAuth.GitHub;
 
 namespace Hummer.Fly.Controllers
@@ -32,6 +33,11 @@ namespace Hummer.Fly.Controllers
         public IActionResult GithubLogin()
         {
             return Challenge(new AuthenticationProperties() { RedirectUri = "/" }, GitHubAuthenticationDefaults.AuthenticationScheme);
+        }
+
+        public IActionResult MicrosoftAccountLogin()
+        {
+            return Challenge(new AuthenticationProperties() { RedirectUri = "/" }, MicrosoftAccountDefaults.AuthenticationScheme);
         }
 
         [HttpPost]
