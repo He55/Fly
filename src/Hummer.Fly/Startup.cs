@@ -41,22 +41,26 @@ namespace Hummer.Fly
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddCookie(options =>
+            })
+            .AddCookie(options =>
             {
                 options.LoginPath = "/account/login";
                 options.LogoutPath = "/account/logout";
                 options.ReturnUrlParameter = "returnUrl";
-            }).AddGoogle(options =>
+            })
+            .AddGoogle(options =>
             {
                 IConfigurationSection googleAuthNSection =
                     Configuration.GetSection("Authentication:Google");
                 options.ClientId = googleAuthNSection["ClientId"];
                 options.ClientSecret = googleAuthNSection["ClientSecret"];
-            }).AddGitHub(options =>
+            })
+            .AddGitHub(options =>
             {
                 options.ClientId = "e632ae66720d7ec4dafd";
                 options.ClientSecret = "4ca196ca3286b11ca7ed083adbee47dcf52da80c";
-            }).AddMicrosoftAccount(options =>
+            })
+            .AddMicrosoftAccount(options =>
             {
                 options.ClientId = "89b7fa2c-1efb-482d-8026-625b9dfb1b2b";
                 options.ClientSecret = ":IwCPi:T[wHScWpu[8UdaHH5T4lvKEW0";
